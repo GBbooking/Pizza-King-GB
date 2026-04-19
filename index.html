@@ -332,29 +332,7 @@ function placeOrder(f, l, p, a) {
   window.open(`https://wa.me/923555049894?text=${text}`);
 }
 
-  function sendContactMessage() {
-  const name = document.getElementById('contactName').value.trim();
-  const phone = document.getElementById('contactPhone').value.trim();
-  const message = document.getElementById('cMsg').value.trim();
-
-  // Basic Validation
-  if (!name || !message) {
-    alert("Please enter both your name and a message.");
-    return;
-  }
-
-  // Formatting the WhatsApp text
-  // %0A is the code for a new line in a URL
-  const businessNumber = "923555049894";
-  const text = `*New Inquiry from Website*%0A%0A` +
-               `*Name:* ${name}%0A` +
-               `*Phone:* ${phone || 'Not provided'}%0A` +
-               `*Message:* ${message}`;
-
-  // Open WhatsApp in a new tab
-  const waUrl = `https://wa.me/${businessNumber}?text=${text}`;
-  window.open(waUrl, '_blank');
-}
+ 
 
 filterProducts();
 </script>
