@@ -51,7 +51,7 @@
   /* HERO */
   .hero { padding:52px 28px 40px; text-align:center; background:linear-gradient(160deg,#e9f5ee 0%,var(--bg) 65%); position:relative; overflow:hidden; }
   .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--accent-pale); color:var(--accent); font-weight:600; font-size:.75rem; letter-spacing:.5px; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px; }
-  .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:800; line-height:1.15; letter-spacing:-1.5px; margin-bottom:12px; }
+  .hero h1 { font-family:'Roboto',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:800; line-height:1.15; letter-spacing:-1.5px; margin-bottom:12px; }
   .hero h1 em { font-style:normal; color:var(--accent); }
   .hero p { color:var(--ink2); font-size:.95rem; max-width:480px; margin:0 auto 22px; }
 
@@ -168,11 +168,11 @@
     <div class="sidebar-title"><i class="fas fa-shopping-cart"></i> Your Cart</div>
     <div id="cartListDesktop" class="cart-list"></div>
     <div class="form-row2">
-      <div class="fg"><label>First Name</label><input type="text" id="fnameD"></div><br><br>
-      <div class="fg"><label>Last Name</label><input type="text" id="lnameD"></div>
+      <div class="fg"><label>First Name</label><input type="text" id="fnameD" placeholder="First Name"></div><br><br>
+      <div class="fg"><label>Last Name</label><input type="text" placeholder="last Name" id="lnameD"></div>
     </div>
     <div class="fg"><label>Contact Number</label><input type="text" id="phoneD" placeholder="03xx-xxxxxxx"></div>
-    <div class="fg"><label>Address</label><textarea id="addrD" rows="2"></textarea></div>
+    <div class="fg"><label>Address</label><textarea placeholder="Street,City" id="addrD" rows="2"></textarea></div>
     <div class="os-total"><span>Total</span><span class="os-total-amt" id="totalD">PKR 0</span></div>
     <button class="btn-wa" onclick="placeOrder('fnameD','lnameD','phoneD','addrD')"><i class="fab fa-whatsapp"></i> Place Order</button>
   </aside>
