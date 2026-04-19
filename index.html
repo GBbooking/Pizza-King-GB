@@ -168,7 +168,7 @@
     <div class="sidebar-title"><i class="fas fa-shopping-cart"></i> Your Cart</div>
     <div id="cartListDesktop" class="cart-list"></div>
     <div class="form-row2">
-      <div class="fg"><label>First Name</label><input type="text" id="fnameD"></div>
+      <div class="fg"><label>First Name</label><input type="text" id="fnameD"></div><br><br>
       <div class="fg"><label>Last Name</label><input type="text" id="lnameD"></div>
     </div>
     <div class="fg"><label>Contact Number</label><input type="text" id="phoneD" placeholder="03xx-xxxxxxx"></div>
@@ -196,13 +196,38 @@
     <h2>Contact Us</h2>
     <div class="contact-grid">
       <div>
-        <div class="cinfo-item"><div><strong>Phone</strong><span>+92 355 5049894</span></div></div>
-        <div class="cinfo-item"><div><strong>WhatsApp</strong><span>+92 355 5049894</span></div></div>
+        <div class="cinfo-item">
+          <div>
+            <strong>Phone</strong>
+            <span>+92 355 5049894</span>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div>
+            <strong>WhatsApp</strong>
+            <span>+92 355 5049894</span>
+          </div>
+        </div>
       </div>
+
       <div class="contact-form">
         <h3>Send a Message</h3>
-        <div class="fg" style="margin-bottom:10px;"><label>Message</label><textarea id="cMsg" rows="3" placeholder="Your message..."></textarea></div>
-        <button class="btn-wa" onclick="alert('Sending...')">Send Message</button>
+        <div class="fg" style="margin-bottom:10px;">
+          <label>Your Name</label>
+          <input type="text" id="contactName" placeholder="Enter your name">
+        </div>
+        <div class="fg" style="margin-bottom:10px;">
+          <label>Your Phone</label>
+          <input type="text" id="contactPhone" placeholder="03xx-xxxxxxx">
+        </div>
+        <div class="fg" style="margin-bottom:10px;">
+          <label>Message</label>
+          <textarea id="cMsg" rows="3" placeholder="How can we help you?"></textarea>
+        </div>
+        
+        <button class="btn-wa" onclick="sendContactMessage()">
+          <i class="fab fa-whatsapp"></i> Send via WhatsApp
+        </button>
       </div>
     </div>
   </div>
@@ -235,6 +260,7 @@ const products = [
   {id:2, name:"Beef Burger", price:650, img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300"},
   {id:3, name:"Cheese Sticks", price:350, img:"https://images.unsplash.com/photo-1531496730074-83b638c0a7ac?w=300"},
   {id:4, name:"Pepperoni Feast", price:1300, img:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300"}
+  {id:5, name:"Pepperoni", price:1500, img:"https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300"}
 ];
 
 let cart = [];
@@ -304,6 +330,30 @@ function placeOrder(f, l, p, a) {
   const items = cart.map(i => `- ${i.name} (x${i.qty})`).join('%0A');
   const text = `*New Order*%0AName: ${fname}%0APhone: ${phone}%0AAddress: ${addr}%0AItems:%0A${items}`;
   window.open(`https://wa.me/923555049894?text=${text}`);
+}
+
+  function sendContactMessage() {
+  const name = document.getElementById('contactName').value.trim();
+  const phone = document.getElementById('contactPhone').value.trim();
+  const message = document.getElementById('cMsg').value.trim();
+
+  // Basic Validation
+  if (!name || !message) {
+    alert("Please enter both your name and a message.");
+    return;
+  }
+
+  // Formatting the WhatsApp text
+  // %0A is the code for a new line in a URL
+  const businessNumber = "923555049894";
+  const text = `*New Inquiry from Website*%0A%0A` +
+               `*Name:* ${name}%0A` +
+               `*Phone:* ${phone || 'Not provided'}%0A` +
+               `*Message:* ${message}`;
+
+  // Open WhatsApp in a new tab
+  const waUrl = `https://wa.me/${businessNumber}?text=${text}`;
+  window.open(waUrl, '_blank');
 }
 
 filterProducts();
