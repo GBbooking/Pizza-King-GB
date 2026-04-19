@@ -561,7 +561,7 @@ function placeOrder(fnId, lnId, addrId, msgId) {
     `📦 *Items Ordered:*\n${itemLines}\n\n`+
     `💵 *Grand Total:* PKR ${grandTotal().toLocaleString()}\n\n`+
     `✅ Please confirm my order. Thank you!`;
-  window.open(`https://wa.me/92119264467?text=${encodeURIComponent(text)}`,'_blank');
+  window.open(`https://wa.me/923555049894?text=${encodeURIComponent(text)}`,'_blank');
   showToast('🚀 Opening WhatsApp…');
 }
 
@@ -634,7 +634,7 @@ function sendContactMessage() {
   document.getElementById('contactFormFields').style.display='none';
   document.getElementById('formSuccess').style.display='block';
   setTimeout(()=>{
-    window.open(`https://wa.me/92119264467?text=${encodeURIComponent(text)}`,'_blank');
+    window.open(`https://wa.me/923555049894?text=${encodeURIComponent(text)}`,'_blank');
     setTimeout(()=>{document.getElementById('contactFormFields').style.display='block';document.getElementById('formSuccess').style.display='none';},2000);
   },500);
 }
