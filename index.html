@@ -4,110 +4,329 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Piza King GB</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <style>
-:root{
---bg:#f5f2ed;--surface:#fff;--surface2:#f0ece4;
---ink:#1a1714;--ink2:#5c5650;
---accent:#2d6a4f;--accent-light:#52b788;
---border:#e0d9ce;--radius:16px;
---shadow:0 4px 20px rgba(0,0,0,.08);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink)}
-nav{position:sticky;top:0;background:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.nav-links{display:flex;gap:12px}
-.nav-links a{text-decoration:none;color:var(--ink2)}
-.shop{max-width:1200px;margin:auto;padding:20px;display:grid;grid-template-columns:1fr 320px;gap:20px}
-@media(max-width:900px){.shop{grid-template-columns:1fr}.sidebar{position:fixed;bottom:0;left:0;right:0}}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer}
-.card img{width:100%;height:120px;object-fit:cover}
-.card-body{padding:10px}
-.price{color:var(--accent);font-weight:700}
-button{cursor:pointer}
-.add{background:var(--accent);color:#fff;border:none;padding:6px 10px;border-radius:8px}
-.sidebar{background:#fff;padding:12px;border-radius:12px;border:1px solid var(--border)}
-.cart-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #eee}
-input,textarea{width:100%;padding:8px;margin-top:5px;border:1px solid var(--border);border-radius:8px}
-.btn-wa{width:100%;background:#25d366;color:#fff;border:none;padding:10px;border-radius:10px;margin-top:10px}
+  :root {
+    --bg: #f5f2ed; --surface: #ffffff; --surface2: #f0ece4;
+    --ink: #1a1714; --ink2: #5c5650;
+    --accent: #2d6a4f; --accent-light: #52b788; --accent-pale: #d8f3dc;
+    --wa: #25d366; --wa-dark: #128c4f; --warn: #e07a5f;
+    --border: #e0d9ce; --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,23,20,0.09);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; font-size: 15px; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245,242,237,0.94); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 60px;
+  }
+  .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:var(--accent); display:flex; align-items:center; gap:7px; letter-spacing:-.3px; }
+  .nav-logo span { color:var(--ink); }
+  .nav-links { display:flex; gap:4px; align-items:center; }
+  .nav-links a { text-decoration:none; color:var(--ink2); font-weight:500; font-size:.88rem; padding:5px 13px; border-radius:100px; transition:all .2s; }
+  .nav-links a:hover { background:var(--surface); color:var(--accent); }
+  .nav-wa { background:var(--wa)!important; color:#fff!important; font-weight:600!important; }
+  .nav-wa:hover { background:var(--wa-dark)!important; }
+  .nav-right { display:flex; align-items:center; gap:10px; }
+  .nav-cart-btn {
+    display:flex; align-items:center; gap:6px;
+    background:var(--ink); color:#fff; border:none; border-radius:100px;
+    padding:6px 15px; font-family:inherit; font-size:.84rem; font-weight:600;
+    cursor:pointer; transition:all .2s;
+  }
+  .nav-cart-btn:hover { background:var(--accent); }
+  .cart-badge { background:var(--wa); color:#fff; border-radius:100px; font-size:.68rem; font-weight:800; padding:1px 6px; min-width:18px; text-align:center; }
+  .hamburger { display:none; cursor:pointer; font-size:1.15rem; color:var(--ink); background:none; border:none; padding:4px; }
+  .mobile-menu { display:none; position:fixed; top:60px; left:0; right:0; z-index:99; background:var(--surface); border-bottom:1px solid var(--border); flex-direction:column; padding:10px 18px 14px; gap:2px; }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a { text-decoration:none; color:var(--ink); font-weight:500; padding:9px 11px; border-radius:9px; transition:background .2s; font-size:.9rem; }
+
+  /* HERO */
+  .hero { padding:52px 28px 40px; text-align:center; background:linear-gradient(160deg,#e9f5ee 0%,var(--bg) 65%); position:relative; overflow:hidden; }
+  .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--accent-pale); color:var(--accent); font-weight:600; font-size:.75rem; letter-spacing:.5px; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px; }
+  .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:800; line-height:1.15; letter-spacing:-1.5px; margin-bottom:12px; }
+  .hero h1 em { font-style:normal; color:var(--accent); }
+  .hero p { color:var(--ink2); font-size:.95rem; max-width:480px; margin:0 auto 22px; }
+
+  /* LAYOUT */
+  .shop-wrapper { display:grid; grid-template-columns:1fr 330px; gap:22px; max-width:1260px; margin:0 auto; padding:28px 18px; align-items:start; }
+
+  /* PRODUCTS */
+  .products-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .products-header h2 { font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:-.5px; }
+  .search-bar { display:flex; align-items:center; gap:8px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; padding:7px 13px; flex:1; max-width:250px; }
+  .search-bar input { border:none; outline:none; background:transparent; font-family:inherit; font-size:.87rem; color:var(--ink); width:100%; }
+  
+  .filter-tabs { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:14px; }
+  .filter-tab { border:1.5px solid var(--border); background:var(--surface); color:var(--ink2); font-size:.76rem; padding:4px 11px; border-radius:100px; cursor:pointer; }
+  .filter-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:13px; }
+  .product-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .25s; position:relative; }
+  .product-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent-light); }
+  .product-card.in-cart { border-color:var(--accent); }
+  .product-img { width:100%; aspect-ratio:1/1; object-fit:cover; background:var(--surface2); }
+  .product-info { padding:10px 11px; }
+  .product-name { font-weight:600; font-size:.83rem; line-height:1.3; margin-bottom:4px; color:var(--ink); }
+  .product-price { font-family:'Syne',sans-serif; font-weight:700; font-size:.92rem; color:var(--accent); }
+  .btn-add { background:var(--accent-pale); color:var(--accent); border:none; border-radius:7px; font-family:inherit; font-size:.73rem; font-weight:600; padding:6px 9px; cursor:pointer; transition:all .2s; width:100%; margin-top:8px; }
+  .btn-add:hover { background:var(--accent); color:#fff; }
+
+  /* SIDEBAR (Compact Fix) */
+  .order-sidebar { position:sticky; top:72px; background:var(--surface); border:1.5px solid var(--border); border-radius:20px; padding:15px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; }
+  .sidebar-title { font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; display:flex; align-items:center; gap:6px; }
+  
+  .cart-list { display:flex; flex-direction:column; gap:6px; max-height:180px; overflow-y:auto; margin-bottom:5px; }
+  .cart-item { display:flex; justify-content:space-between; align-items:center; background:var(--surface2); border-radius:8px; padding:6px 9px; border:1px solid var(--border); font-size:.78rem; }
+  .ci-controls { display:flex; align-items:center; gap:5px; }
+  .ci-btn { background:var(--surface); border:1px solid var(--border); border-radius:4px; width:20px; height:20px; cursor:pointer; font-weight:bold; }
+  
+  .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+  .fg { display:flex; flex-direction:column; gap:2px; }
+  .fg label { font-size:.65rem; font-weight:700; color:var(--ink2); text-transform:uppercase; }
+  .fg input, .fg textarea { padding:6px 9px; border:1.5px solid var(--border); border-radius:8px; background:var(--bg); font-family:inherit; font-size:.8rem; outline:none; }
+  
+  .os-total { display:flex; justify-content:space-between; align-items:center; padding-top:6px; border-top:1.5px dashed var(--border); }
+  .os-total-amt { font-family:'Syne',sans-serif; font-weight:800; font-size:1rem; color:var(--accent); }
+  
+  .btn-wa { width:100%; padding:10px; background:var(--wa); color:#fff; border:none; border-radius:10px; font-family:'Syne',sans-serif; font-size:.88rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; }
+
+  /* MOBILE DRAWER & FAB */
+  .cart-fab { display:none; position:fixed; bottom:20px; right:18px; z-index:200; width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.2rem; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.2); align-items:center; justify-content:center; }
+  .fab-badge { position:absolute; top:-3px; right:-3px; background:var(--wa); color:#fff; border-radius:50%; min-width:18px; padding:2px; font-size:10px; }
+  .cart-drawer { display:none; position:fixed; inset:0; z-index:300; }
+  .cart-drawer.open { display:block; }
+  .drawer-overlay { position:absolute; inset:0; background:rgba(0,0,0,.45); }
+  .drawer-panel { position:absolute; bottom:0; left:0; right:0; background:var(--surface); border-radius:22px 22px 0 0; padding:18px; max-height:90vh; overflow-y:auto; }
+
+  /* SECTIONS */
+  #about, #contact { padding:60px 28px; }
+  #about { background:var(--ink); color:#fff; }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; }
+
+  /* MEDIA QUERIES */
+  @media (max-width: 900px) {
+    .shop-wrapper { grid-template-columns: 1fr; }
+    .order-sidebar { display: none; }
+    .cart-fab { display: flex; }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .products-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  footer { background:#111; color:#888; text-align:center; padding:18px; font-size:.8rem; }
+  .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--ink); color:#fff; padding:8px 16px; border-radius:100px; font-size:13px; z-index:1000; display:none; }
 </style>
 </head>
 <body>
 
 <nav>
-<div><b>QuickMart</b></div>
-<div class="nav-links">
-<a href="#">Home</a>
-<a href="#">Products</a>
-<a href="#">Contact</a>
-</div>
+  <div class="nav-logo"><i class="fas fa-pizza-slice"></i>Pizza<span>King GB</span></div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="https://wa.me/923555049894" class="nav-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-cart-btn" onclick="openDrawer()">
+      <i class="fas fa-shopping-cart"></i> <span class="cart-badge" id="navCartCount">0</span>
+    </button>
+    <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  </div>
 </nav>
 
-<div class="shop">
-<div>
-<div class="products" id="products"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="toggleMenu()">Home</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
 </div>
 
-<div class="sidebar">
-<h3>Cart</h3>
-<div id="cart"></div>
-<hr/>
-<input id="name" placeholder="Full Name"/>
-<input id="phone" placeholder="Contact Number"/>
-<textarea id="address" placeholder="Address"></textarea>
-<button class="btn-wa" onclick="order()">Order WhatsApp</button>
+<section class="hero" id="home">
+  <div class="hero-badge">Authentic Flavors · Direct to WhatsApp</div>
+  <h1>Piza King <em>Gilgit Baltistan</em></h1>
+  <p>Order the best pizza and local delights in just a few clicks.</p>
+</section>
+
+<div class="shop-wrapper">
+  <div>
+    <div class="products-header">
+      <h2>Our Menu</h2>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search pizza..." oninput="filterProducts()">
+      </div>
+    </div>
+    <div class="filter-tabs" id="filterTabs"></div>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+
+  <aside class="order-sidebar">
+    <div class="sidebar-title"><i class="fas fa-shopping-cart"></i> Your Order</div>
+    <div id="cartListDesktop" class="cart-list"></div>
+    <div class="form-row2">
+      <div class="fg"><label>First Name</label><input type="text" id="fnameD"></div>
+      <div class="fg"><label>Last Name</label><input type="text" id="lnameD"></div>
+    </div>
+    <div class="fg"><label>Contact Number</label><input type="text" id="phoneD" placeholder="03xx-xxxxxxx"></div>
+    <div class="fg"><label>Delivery Address</label><textarea id="addrD" rows="2"></textarea></div>
+    <div class="os-total"><span>Total</span><span class="os-total-amt" id="totalD">PKR 0</span></div>
+    <button class="btn-wa" onclick="placeOrder('fnameD','lnameD','phoneD','addrD')"><i class="fab fa-whatsapp"></i> Send Order</button>
+  </aside>
 </div>
+
+<button class="cart-fab" onclick="openDrawer()">
+  <i class="fas fa-shopping-cart"></i>
+  <span class="fab-badge" id="fabBadge">0</span>
+</button>
+
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="drawer-panel">
+    <h3>Complete Your Order</h3>
+    <div id="cartListMobile" class="cart-list"></div>
+    <div class="form-row2" style="margin-top:10px">
+      <div class="fg"><label>First Name</label><input type="text" id="fnameM"></div>
+      <div class="fg"><label>Last Name</label><input type="text" id="lnameM"></div>
+    </div>
+    <div class="fg"><label>Contact Number</label><input type="text" id="phoneM"></div>
+    <div class="fg"><label>Address</label><textarea id="addrM" rows="2"></textarea></div>
+    <button class="btn-wa" style="margin-top:10px" onclick="placeOrder('fnameM','lnameM', 'phoneM','addrM')">Send via WhatsApp</button>
+  </div>
 </div>
+
+<div class="toast" id="toast">Item added!</div>
+
+<footer><p>© 2026 Pizza King GB · Gilgit, Pakistan</p></footer>
 
 <script>
-const products=[
-{id:1,name:"Wireless Earbuds",price:2500,img:"https://via.placeholder.com/300x200?text=Earbuds"},
-{id:2,name:"Bluetooth Speaker",price:3200,img:"https://via.placeholder.com/300x200?text=Speaker"},
-{id:3,name:"Power Bank",price:2800,img:"https://via.placeholder.com/300x200?text=PowerBank"},
-{id:4,name:"Smart Watch",price:6000,img:"https://via.placeholder.com/300x200?text=Watch"}
+const products = [
+  {id:1, name:"Chicken Tikka Pizza", price:1200, cat:"Pizza", img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80"},
+  {id:2, name:"Beef Supreme Burger", price:650, cat:"Burgers", img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80"},
+  {id:3, name:"Cheesy Garlic Bread", price:350, cat:"Sides", img:"https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=300&q=80"},
+  {id:4, name:"Peri Peri Wings", price:450, cat:"Sides", img:"https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=300&q=80"},
+  {id:5, name:"Margherita Pizza", price:900, cat:"Pizza", img:"https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?auto=format&fit=crop&w=300&q=80"},
+  {id:6, name:"Zinger Burger", price:400, cat:"Burgers", img:"https://images.unsplash.com/photo-1513185158878-8d8c196b3f68?auto=format&fit=crop&w=300&q=80"}
 ];
 
-let cart={};
+let cart = [];
+let activeCat = "All";
 
-function render(){
-let p=document.getElementById('products');
-p.innerHTML='';
-products.forEach(i=>{
-let d=document.createElement('div');
-d.className='card';
-d.innerHTML=`<img src='${i.img}'/><div class='card-body'><b>${i.name}</b><div class='price'>PKR ${i.price}</div><button class='add' onclick='add(${i.id})'>Add</button></div>`;
-p.appendChild(d);
-});
-updateCart();
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function openDrawer() { document.getElementById('cartDrawer').classList.add('open'); }
+function closeDrawer() { document.getElementById('cartDrawer').classList.remove('remove'); document.getElementById('cartDrawer').style.display='none'; } // simplified for demo
+// fix: actual drawer toggle
+function openDrawer() { document.getElementById('cartDrawer').classList.add('open'); }
+function closeDrawer() { document.getElementById('cartDrawer').classList.remove('open'); }
+
+function renderFilters() {
+  const cats = ["All", ...new Set(products.map(p => p.cat))];
+  document.getElementById('filterTabs').innerHTML = cats.map(c => 
+    `<button class="filter-tab ${c===activeCat?'active':''}" onclick="setFilter('${c}')">${c}</button>`
+  ).join('');
 }
 
-function add(id){cart[id]=(cart[id]||0)+1;updateCart();}
-function remove(id){delete cart[id];updateCart();}
-
-function updateCart(){
-let c=document.getElementById('cart');c.innerHTML='';
-Object.keys(cart).forEach(id=>{
-let p=products.find(x=>x.id==id);
-c.innerHTML+=`<div class='cart-item'>${p.name} x ${cart[id]} <button onclick='remove(${id})'>x</button></div>`;
-});
+function setFilter(c) {
+  activeCat = c;
+  renderFilters();
+  filterProducts();
 }
 
-function order(){
-let name=document.getElementById('name').value;
-let phone=document.getElementById('phone').value;
-let address=document.getElementById('address').value;
-let items=Object.keys(cart).map(id=>{
-let p=products.find(x=>x.id==id);
-return `${p.name} x ${cart[id]}`;
-}).join('\n');
-
-let msg=`Order:\n${name}\n${phone}\n${address}\n\n${items}`;
-window.open('https://wa.me/92119264467?text='+encodeURIComponent(msg));
+function filterProducts() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('productsGrid');
+  const filtered = products.filter(p => 
+    (activeCat === "All" || p.cat === activeCat) && 
+    (p.name.toLowerCase().includes(query))
+  );
+  
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card">
+      <img src="${p.img}" class="product-img" alt="${p.name}">
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">PKR ${p.price}</div>
+        <button class="btn-add" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-render();
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(i => i.id === id);
+  if(existing) { existing.qty++; } else { cart.push({...p, qty: 1}); }
+  showToast(p.name + " added!");
+  updateUI();
+}
+
+function updateQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(item) {
+    item.qty += delta;
+    if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  }
+  updateUI();
+}
+
+function updateUI() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  
+  document.getElementById('navCartCount').innerText = count;
+  document.getElementById('fabBadge').innerText = count;
+  document.getElementById('totalD').innerText = 'PKR ' + total;
+  
+  const listHtml = cart.length ? cart.map(i => `
+    <div class="cart-item">
+      <span>${i.name} x${i.qty}</span>
+      <div class="ci-controls">
+        <button class="ci-btn" onclick="updateQty(${i.id}, -1)">-</button>
+        <button class="ci-btn" onclick="updateQty(${i.id}, 1)">+</button>
+      </div>
+    </div>
+  `).join('') : '<p style="color:gray;font-size:12px">Your cart is empty</p>';
+  
+  document.getElementById('cartListDesktop').innerHTML = listHtml;
+  document.getElementById('cartListMobile').innerHTML = listHtml;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2000);
+}
+
+function placeOrder(f, l, p, a) {
+  const fname = document.getElementById(f).value;
+  const lname = document.getElementById(l).value;
+  const phone = document.getElementById(p).value;
+  const addr = document.getElementById(a).value;
+  
+  if(!cart.length) return alert("Your cart is empty");
+  if(!fname || !phone || !addr) return alert("Please fill Name, Phone and Address");
+
+  const items = cart.map(i => `- ${i.name} (x${i.qty}) = PKR ${i.price * i.qty}`).join('%0A');
+  const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+  
+  const text = `*New Order: Piza King GB*%0A%0A*Customer:* ${fname} ${lname}%0A*Phone:* ${phone}%0A*Address:* ${addr}%0A%0A*Items:*%0A${items}%0A%0A*Total: PKR ${total}*`;
+  window.open(`https://wa.me/923555049894?text=${text}`);
+}
+
+// Init
+renderFilters();
+filterProducts();
 </script>
-
 </body>
 </html>
