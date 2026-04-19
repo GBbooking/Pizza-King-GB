@@ -43,77 +43,94 @@
   }
   .cart-badge { background:var(--wa); color:#fff; border-radius:100px; font-size:.68rem; font-weight:800; padding:1px 6px; min-width:18px; text-align:center; }
   .hamburger { display:none; cursor:pointer; font-size:1.15rem; color:var(--ink); background:none; border:none; padding:4px; }
-  
-  /* MOBILE MENU */
   .mobile-menu { display:none; position:fixed; top:60px; left:0; right:0; z-index:99; background:var(--surface); border-bottom:1px solid var(--border); flex-direction:column; padding:10px 18px 14px; gap:2px; }
   .mobile-menu.open { display:flex; }
   .mobile-menu a { text-decoration:none; color:var(--ink); font-weight:500; padding:9px 11px; border-radius:9px; transition:background .2s; font-size:.9rem; }
 
   /* HERO */
   .hero { padding:52px 28px 40px; text-align:center; background:linear-gradient(160deg,#e9f5ee 0%,var(--bg) 65%); position:relative; overflow:hidden; }
+  .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--accent-pale); color:var(--accent); font-weight:600; font-size:.75rem; letter-spacing:.5px; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px; }
   .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:800; line-height:1.15; letter-spacing:-1.5px; margin-bottom:12px; }
   .hero h1 em { font-style:normal; color:var(--accent); }
   .hero p { color:var(--ink2); font-size:.95rem; max-width:480px; margin:0 auto 22px; }
+  .hero-stats { display:flex; justify-content:center; gap:32px; flex-wrap:wrap; }
+  .stat strong { display:block; font-family:'Syne',sans-serif; font-size:1.45rem; font-weight:800; color:var(--accent); }
+  .stat span { font-size:.78rem; color:var(--ink2); font-weight:500; }
 
   /* LAYOUT */
-  .shop-wrapper { display:grid; grid-template-columns:1fr 350px; gap:22px; max-width:1260px; margin:0 auto; padding:28px 18px; align-items:start; }
+  .shop-wrapper { display:grid; grid-template-columns:1fr 340px; gap:22px; max-width:1260px; margin:0 auto; padding:28px 18px; align-items:start; }
 
-  /* PRODUCTS GRID - REFACTORED TO HTML */
-  .products-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px; }
-  .product-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .25s; position:relative; padding-bottom:10px; }
+  /* PRODUCTS */
+  .products-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .products-header h2 { font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:-.5px; }
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+  .product-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .25s; position:relative; }
   .product-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent-light); }
-  .product-img { width:100%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-size:3rem; background:var(--surface2); }
+  .product-img { width:100%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-size:2.5rem; background:var(--surface2); }
   .product-info { padding:12px; }
-  .product-name { font-weight:700; font-size:0.9rem; margin-bottom:4px; }
-  .product-price { font-family:'Syne',sans-serif; font-weight:700; color:var(--accent); font-size:1rem; }
-  .btn-add { width:100%; margin-top:8px; background:var(--accent-pale); color:var(--accent); border:none; border-radius:8px; padding:8px; font-weight:700; cursor:pointer; }
+  .product-name { font-weight:700; font-size:.9rem; line-height:1.3; margin-bottom:4px; color:var(--ink); }
+  .product-price { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; color:var(--accent); }
+  .btn-add { background:var(--accent-pale); color:var(--accent); border:none; border-radius:8px; width:100%; font-family:inherit; font-size:.8rem; font-weight:700; padding:8px; cursor:pointer; transition:all .2s; margin-top:8px; }
   .btn-add:hover { background:var(--accent); color:#fff; }
 
-  /* SIDEBAR & CART */
+  /* SIDEBAR */
   .order-sidebar { position:sticky; top:80px; background:var(--surface); border:1.5px solid var(--border); border-radius:20px; padding:20px; box-shadow:var(--shadow); }
-  .cart-list { display:flex; flex-direction:column; gap:8px; max-height:250px; overflow-y:auto; margin-bottom:15px; }
-  .cart-item { display:flex; justify-content:space-between; align-items:center; background:var(--surface2); padding:8px; border-radius:8px; font-size:0.8rem; }
+  .cart-list { display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; margin-bottom:12px; }
+  .cart-item { display:flex; justify-content:space-between; align-items:center; background:var(--surface2); padding:8px; border-radius:8px; font-size:.8rem; border:1px solid var(--border); }
   
   /* FORM FIELDS */
   .fg { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
-  .fg label { font-size:.7rem; font-weight:700; color:var(--ink2); text-transform:uppercase; }
-  .fg input, .fg textarea { padding:10px; border:1.5px solid var(--border); border-radius:8px; outline:none; font-family:inherit; }
+  .fg label { font-size:.7rem; font-weight:700; color:var(--ink2); text-transform:uppercase; letter-spacing:.4px; }
+  .fg input, .fg textarea { padding:9px; border:1.5px solid var(--border); border-radius:8px; background:var(--bg); font-family:inherit; font-size:.85rem; outline:none; }
   .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
-  .btn-wa { width:100%; padding:14px; background:var(--wa); color:#fff; border:none; border-radius:10px; font-family:'Syne',sans-serif; font-weight:700; cursor:pointer; margin-top:10px; }
+  .btn-wa { width:100%; padding:12px; background:var(--wa); color:#fff; border:none; border-radius:10px; font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; }
   .btn-wa:hover { background:var(--wa-dark); }
 
-  /* FIXING MEDIA QUERIES */
+  /* FIXING MEDIA QUERIES (RESTORED & FIXED) */
   @media (max-width: 1024px) {
     .shop-wrapper { grid-template-columns: 1fr; }
     .order-sidebar { display: none; }
     .cart-fab { display: flex; }
+    .hero h1 { font-size: 2.2rem; }
   }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hamburger { display: block; }
     .products-grid { grid-template-columns: repeat(2, 1fr); gap:12px; }
-    nav { padding: 0 15px; }
+    .hero { padding: 40px 20px; }
   }
 
   @media (max-width: 480px) {
     .products-grid { grid-template-columns: 1fr; }
   }
 
-  /* FAB & DRAWER */
-  .cart-fab { position:fixed; bottom:20px; right:20px; width:60px; height:60px; background:var(--accent); color:#fff; border-radius:50%; display:none; align-items:center; justify-content:center; font-size:1.5rem; z-index:99; border:none; box-shadow: var(--shadow); }
+  /* MOBILE DRAWER & FAB */
+  .cart-fab { display:none; position:fixed; bottom:20px; right:20px; z-index:200; width:56px; height:56px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.3rem; cursor:pointer; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
   .cart-drawer { display:none; position:fixed; inset:0; z-index:300; }
   .cart-drawer.open { display:block; }
   .drawer-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.5); }
-  .drawer-panel { position:absolute; bottom:0; left:0; right:0; background:#fff; padding:20px; border-radius:20px 20px 0 0; max-height:85vh; overflow-y:auto; }
+  .drawer-panel { position:absolute; bottom:0; left:0; right:0; background:var(--surface); border-radius:22px 22px 0 0; padding:20px; max-height:85vh; overflow-y:auto; }
 
+  /* ABOUT & CONTACT SECTION (RESTORED) */
+  #about { background:var(--ink); color:#fff; padding:60px 20px; }
+  .about-inner { max-width:1000px; margin:0 auto; }
+  .about-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin-top:20px; }
+  .about-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; }
+  
+  #contact { padding:60px 20px; background:var(--bg); }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto; }
+  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-form { background:#fff; padding:20px; border-radius:16px; border:1px solid var(--border); }
+  
+  footer { background:#111; color:#777; text-align:center; padding:20px; font-size:.8rem; }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo"><i class="fas fa-pizza-slice"></i>Pizza<span>King GB</span></div>
+  <div class="nav-logo"><i class="fas fa-leaf"></i>Pizza<span>King GB</span></div>
   <div class="nav-links">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -122,37 +139,41 @@
   </div>
   <div class="nav-right">
     <button class="nav-cart-btn" onclick="openDrawer()">
-      <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
+      <i class="fas fa-shopping-cart"></i> Cart
+      <span class="cart-badge" id="navCartCount">0</span>
     </button>
     <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
   </div>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
+  <a href="#home" onclick="toggleMenu()">Home</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
 </div>
 
 <section class="hero" id="home">
-  <h1>Fresh Pizza & More, Order via <em>WhatsApp</em></h1>
-  <p>Select your favorite items and we'll deliver them to your doorstep in Gilgit Baltistan.</p>
+  <div class="hero-badge">Multi-Item Cart · Order via WhatsApp</div>
+  <h1>Add Items, Order via <em>WhatsApp</em></h1>
+  <p>Freshly baked pizza and local favorites delivered to your door in Gilgit Baltistan.</p>
 </section>
 
 <div class="shop-wrapper">
-  <main>
-    <div class="products-grid" id="productsGrid">
-      
-      <div class="product-card" data-id="1" data-name="Chicken Tikka Pizza" data-price="1200">
+  <div>
+    <div class="products-header">
+      <h2>Browse Menu</h2>
+    </div>
+    
+    <div class="products-grid">
+      <div class="product-card">
         <div class="product-img">🍕</div>
         <div class="product-info">
           <div class="product-name">Chicken Tikka Pizza</div>
-          <div class="product-price">PKR 1,200</div>
+          <div class="product-price">PKR 1200</div>
           <button class="btn-add" onclick="addToCart(1, 'Chicken Tikka Pizza', 1200, '🍕')">Add to Cart</button>
         </div>
       </div>
-
-      <div class="product-card" data-id="2" data-name="Beef Burger Special" data-price="550">
+      <div class="product-card">
         <div class="product-img">🍔</div>
         <div class="product-info">
           <div class="product-name">Beef Burger Special</div>
@@ -160,8 +181,7 @@
           <button class="btn-add" onclick="addToCart(2, 'Beef Burger Special', 550, '🍔')">Add to Cart</button>
         </div>
       </div>
-
-      <div class="product-card" data-id="3" data-name="Crunchy Zing" data-price="450">
+      <div class="product-card">
         <div class="product-img">🍗</div>
         <div class="product-info">
           <div class="product-name">Crunchy Zing</div>
@@ -169,8 +189,7 @@
           <button class="btn-add" onclick="addToCart(3, 'Crunchy Zing', 450, '🍗')">Add to Cart</button>
         </div>
       </div>
-
-      <div class="product-card" data-id="4" data-name="Loaded Fries" data-price="350">
+      <div class="product-card">
         <div class="product-img">🍟</div>
         <div class="product-info">
           <div class="product-name">Loaded Fries</div>
@@ -178,120 +197,111 @@
           <button class="btn-add" onclick="addToCart(4, 'Loaded Fries', 350, '🍟')">Add to Cart</button>
         </div>
       </div>
-
     </div>
-  </main>
+  </div>
 
   <aside class="order-sidebar">
-    <h3 style="margin-bottom:15px;"><i class="fas fa-shopping-basket"></i> Your Order</h3>
-    <div id="cartItemsDesktop" class="cart-list"></div>
-    
+    <h3>Your Cart</h3>
+    <div id="cartListDesktop" class="cart-list"></div>
     <div class="form-row2">
       <div class="fg"><label>First Name</label><input type="text" id="fname" placeholder="Ali"></div>
       <div class="fg"><label>Last Name</label><input type="text" id="lname" placeholder="Hassan"></div>
     </div>
     <div class="fg"><label>Contact Number</label><input type="text" id="phone" placeholder="03xx-xxxxxxx"></div>
-    <div class="fg"><label>Delivery Address</label><textarea id="addr" rows="2" placeholder="Street, Sector, City"></textarea></div>
-
-    <div style="font-weight:800; font-size:1.1rem; margin:10px 0;">Total: <span id="totalPrice" style="color:var(--accent)">PKR 0</span></div>
-    
-    <button class="btn-wa" onclick="sendOrder('fname', 'lname', 'phone', 'addr')">Confirm via WhatsApp</button>
+    <div class="fg"><label>Address</label><textarea id="address" rows="2" placeholder="House #, Street..."></textarea></div>
+    <div style="font-weight:800; padding:10px 0;">Total: <span id="totalD" style="color:var(--accent)">PKR 0</span></div>
+    <button class="btn-wa" onclick="placeOrder('fname', 'lname', 'phone', 'address')"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
   </aside>
 </div>
+
+<section id="about">
+  <div class="about-inner">
+    <h2>Your Trusted <em>Online Store</em> in GB</h2>
+    <div class="about-cards">
+      <div class="about-card"><h3>Trusted Quality</h3><p>Every order quality-checked.</p></div>
+      <div class="about-card"><h3>Fast Delivery</h3><p>Direct to your doorstep.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+        <h2>Get In Touch</h2>
+        <p>WhatsApp: +92 355 5049894</p>
+    </div>
+    <div class="contact-form">
+        <div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div class="fg"><label>Message</label><textarea rows="3" placeholder="How can we help?"></textarea></div>
+        <button class="btn-wa">Send Message</button>
+    </div>
+  </div>
+</section>
 
 <button class="cart-fab" onclick="openDrawer()"><i class="fas fa-shopping-cart"></i></button>
 
 <div class="cart-drawer" id="cartDrawer">
   <div class="drawer-overlay" onclick="closeDrawer()"></div>
   <div class="drawer-panel">
-    <h3>Your Cart</h3>
-    <div id="cartItemsMobile" class="cart-list"></div>
+    <h3>Mobile Cart</h3>
+    <div id="cartListMobile" class="cart-list"></div>
     <div class="form-row2">
-        <div class="fg"><label>First Name</label><input type="text" id="fnameM" placeholder="Ali"></div>
-        <div class="fg"><label>Last Name</label><input type="text" id="lnameM" placeholder="Hassan"></div>
+      <div class="fg"><label>First Name</label><input type="text" id="fnameM" placeholder="Ali"></div>
+      <div class="fg"><label>Last Name</label><input type="text" id="lnameM" placeholder="Hassan"></div>
     </div>
     <div class="fg"><label>Contact Number</label><input type="text" id="phoneM" placeholder="03xx-xxxxxxx"></div>
-    <div class="fg"><label>Address</label><textarea id="addrM" rows="2"></textarea></div>
-    <button class="btn-wa" onclick="sendOrder('fnameM', 'lnameM', 'phoneM', 'addrM')">Place Order</button>
+    <div class="fg"><label>Address</label><textarea id="addressM" rows="2"></textarea></div>
+    <button class="btn-wa" onclick="placeOrder('fnameM', 'lnameM', 'phoneM', 'addressM')">Order Now</button>
   </div>
 </div>
+
+<footer><p>© 2026 <strong>Pizza King GB</strong> · All Rights Reserved</p></footer>
 
 <script>
 let cart = [];
 
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-
-function openDrawer() {
-  document.getElementById('cartDrawer').classList.add('open');
-}
-
-function closeDrawer() {
-  document.getElementById('cartDrawer').classList.remove('open');
-}
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function openDrawer() { document.getElementById('cartDrawer').classList.add('open'); }
+function closeDrawer() { document.getElementById('cartDrawer').classList.remove('open'); }
 
 function addToCart(id, name, price, emoji) {
-  const existing = cart.find(item => item.id === id);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ id, name, price, emoji, qty: 1 });
-  }
-  updateUI();
+  const exist = cart.find(i => i.id === id);
+  if (exist) { exist.qty++; } else { cart.push({id, name, price, emoji, qty: 1}); }
+  updateCart();
 }
 
-function updateUI() {
-  const desktopList = document.getElementById('cartItemsDesktop');
-  const mobileList = document.getElementById('cartItemsMobile');
-  const countLabel = document.getElementById('cartCount');
-  const totalLabel = document.getElementById('totalPrice');
-  
+function updateCart() {
+  const dList = document.getElementById('cartListDesktop');
+  const mList = document.getElementById('cartListMobile');
   let html = '';
   let total = 0;
-  let itemsCount = 0;
+  let count = 0;
 
   cart.forEach(item => {
     total += (item.price * item.qty);
-    itemsCount += item.qty;
-    html += `
-      <div class="cart-item">
-        <span>${item.emoji} ${item.name} (x${item.qty})</span>
-        <span>PKR ${item.price * item.qty}</span>
-      </div>
-    `;
+    count += item.qty;
+    html += `<div class="cart-item"><span>${item.emoji} ${item.name} x${item.qty}</span><span>${item.price * item.qty}</span></div>`;
   });
 
-  desktopList.innerHTML = html || '<p>Cart is empty</p>';
-  mobileList.innerHTML = html || '<p>Cart is empty</p>';
-  countLabel.innerText = itemsCount;
-  totalLabel.innerText = 'PKR ' + total;
+  dList.innerHTML = mList.innerHTML = html || '<p>Empty Cart</p>';
+  document.getElementById('navCartCount').innerText = count;
+  document.getElementById('totalD').innerText = 'PKR ' + total;
 }
 
-function sendOrder(fID, lID, pID, aID) {
-  const fname = document.getElementById(fID).value;
-  const lname = document.getElementById(lID).value;
-  const phone = document.getElementById(pID).value;
-  const addr = document.getElementById(aID).value;
+function placeOrder(fID, lID, pID, aID) {
+  const fn = document.getElementById(fID).value;
+  const ln = document.getElementById(lID).value;
+  const ph = document.getElementById(pID).value;
+  const ad = document.getElementById(aID).value;
 
-  if (cart.length === 0 || !fname || !phone || !addr) {
-    alert("Please add items and fill all details including Phone Number!");
-    return;
-  }
+  if (!cart.length || !fn || !ph || !ad) { alert("Add items and fill all details!"); return; }
 
-  let itemsText = cart.map(i => `- ${i.name} (x${i.qty}): PKR ${i.price * i.qty}`).join('%0A');
-  let total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  let itemsText = cart.map(i => `- ${i.name} (x${i.qty})`).join('%0A');
+  let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
   
-  const text = `*New Order - Pizza King GB*%0A%0A` +
-               `*Name:* ${fname} ${lname}%0A` +
-               `*Phone:* ${phone}%0A` +
-               `*Address:* ${addr}%0A%0A` +
-               `*Items:*%0A${itemsText}%0A%0A` +
-               `*Total Amount:* PKR ${total}`;
-
-  window.open(`https://wa.me/923555049894?text=${text}`, '_blank');
+  const msg = `*New Order - Pizza King GB*%0A%0A*Name:* ${fn} ${ln}%0A*Phone:* ${ph}%0A*Address:* ${ad}%0A%0A*Items:*%0A${itemsText}%0A%0A*Total:* PKR ${total}`;
+  window.open(`https://wa.me/923555049894?text=${msg}`, '_blank');
 }
 </script>
-
 </body>
 </html>
