@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Pizza King</title>
+<title>Piza King</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <style>
@@ -41,14 +41,17 @@
     padding:6px 15px; font-family:inherit; font-size:.84rem; font-weight:600;
     cursor:pointer; transition:all .2s;
   }
+  .nav-cart-btn:hover { background:var(--accent); }
   .cart-badge { background:var(--wa); color:#fff; border-radius:100px; font-size:.68rem; font-weight:800; padding:1px 6px; min-width:18px; text-align:center; }
   .hamburger { display:none; cursor:pointer; font-size:1.15rem; color:var(--ink); background:none; border:none; padding:4px; }
   .mobile-menu { display:none; position:fixed; top:60px; left:0; right:0; z-index:99; background:var(--surface); border-bottom:1px solid var(--border); flex-direction:column; padding:10px 18px 14px; gap:2px; }
   .mobile-menu.open { display:flex; }
   .mobile-menu a { text-decoration:none; color:var(--ink); font-weight:500; padding:9px 11px; border-radius:9px; transition:background .2s; font-size:.9rem; }
+  .mobile-menu a:hover { background:var(--surface2); }
 
   /* HERO */
   .hero { padding:52px 28px 40px; text-align:center; background:linear-gradient(160deg,#e9f5ee 0%,var(--bg) 65%); position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-50px; right:-70px; width:260px; height:260px; background:radial-gradient(circle,#b7e4c7 0%,transparent 70%); pointer-events:none; }
   .hero-badge { display:inline-flex; align-items:center; gap:6px; background:var(--accent-pale); color:var(--accent); font-weight:600; font-size:.75rem; letter-spacing:.5px; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px; }
   .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,5vw,3rem); font-weight:800; line-height:1.15; letter-spacing:-1.5px; margin-bottom:12px; }
   .hero h1 em { font-style:normal; color:var(--accent); }
@@ -58,84 +61,172 @@
   .stat span { font-size:.78rem; color:var(--ink2); font-weight:500; }
 
   /* LAYOUT */
-  .shop-wrapper { display:grid; grid-template-columns:1fr 340px; gap:22px; max-width:1260px; margin:0 auto; padding:28px 18px; align-items:start; }
+  .shop-wrapper { display:grid; grid-template-columns:1fr 330px; gap:22px; max-width:1260px; margin:0 auto; padding:28px 18px; align-items:start; }
 
   /* PRODUCTS */
   .products-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
   .products-header h2 { font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:-.5px; }
-  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
-  .product-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; transition:all .25s; position:relative; }
+  .search-bar { display:flex; align-items:center; gap:8px; background:var(--surface); border:1.5px solid var(--border); border-radius:100px; padding:7px 13px; flex:1; max-width:250px; }
+  .search-bar i { color:var(--ink2); font-size:.82rem; }
+  .search-bar input { border:none; outline:none; background:transparent; font-family:inherit; font-size:.87rem; color:var(--ink); width:100%; }
+  .filter-tabs { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:14px; }
+  .filter-tab { border:1.5px solid var(--border); background:var(--surface); color:var(--ink2); font-family:inherit; font-size:.76rem; font-weight:500; padding:4px 11px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .filter-tab:hover,.filter-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:13px; }
+  .product-card { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all .25s; position:relative; }
   .product-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent-light); }
+  .product-card.in-cart { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-pale); }
+  .cart-qty-badge { display:none; position:absolute; top:8px; right:8px; background:var(--accent); color:#fff; border-radius:100px; min-width:22px; height:22px; padding:0 5px; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; }
+  .product-card.in-cart .cart-qty-badge { display:flex; }
   .product-img { width:100%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; font-size:2.5rem; background:var(--surface2); }
-  .product-info { padding:12px; }
-  .product-name { font-weight:700; font-size:.9rem; line-height:1.3; margin-bottom:4px; color:var(--ink); }
-  .product-price { font-family:'Syne',sans-serif; font-weight:700; font-size:.95rem; color:var(--accent); }
-  .btn-add { background:var(--accent-pale); color:var(--accent); border:none; border-radius:8px; width:100%; font-family:inherit; font-size:.8rem; font-weight:700; padding:8px; cursor:pointer; transition:all .2s; margin-top:8px; }
-  .btn-add:hover { background:var(--accent); color:#fff; }
+  .product-info { padding:10px 11px; }
+  .product-name { font-weight:600; font-size:.83rem; line-height:1.3; margin-bottom:4px; color:var(--ink); }
+  .product-category { font-size:.67rem; color:var(--ink2); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; font-weight:500; }
+  .product-footer { display:flex; align-items:center; justify-content:space-between; }
+  .product-price { font-family:'Syne',sans-serif; font-weight:700; font-size:.92rem; color:var(--accent); }
+  .btn-add { background:var(--accent-pale); color:var(--accent); border:none; border-radius:7px; font-family:inherit; font-size:.73rem; font-weight:600; padding:4px 9px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .btn-add:hover,.product-card.in-cart .btn-add { background:var(--accent); color:#fff; }
+  .no-results { grid-column:1/-1; text-align:center; padding:40px 0; color:var(--ink2); }
+  .no-results i { font-size:2rem; margin-bottom:8px; display:block; }
 
-  /* SIDEBAR */
-  .order-sidebar { position:sticky; top:80px; background:var(--surface); border:1.5px solid var(--border); border-radius:20px; padding:20px; box-shadow:var(--shadow); }
-  .cart-list { display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto; margin-bottom:12px; }
-  .cart-item { display:flex; justify-content:space-between; align-items:center; background:var(--surface2); padding:8px; border-radius:8px; font-size:.8rem; border:1px solid var(--border); }
-  
-  /* FORM FIELDS */
-  .fg { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+  /* ── SIDEBAR ── */
+  .order-sidebar {
+    position:sticky; top:72px;
+    background:var(--surface); border:1.5px solid var(--border);
+    border-radius:20px; padding:18px 16px;
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .sidebar-title { font-family:'Syne',sans-serif; font-size:.98rem; font-weight:700; display:flex; align-items:center; gap:6px; }
+  .sidebar-title i { color:var(--accent); }
+  .sidebar-count { font-size:.75rem; color:var(--ink2); font-weight:400; margin-left:auto; }
+
+  /* Cart List */
+  .cart-empty { color:var(--ink2); font-size:.82rem; font-style:italic; text-align:center; padding:12px 0; }
+  .cart-list { display:flex; flex-direction:column; gap:7px; max-height:200px; overflow-y:auto; padding-right:2px; }
+  .cart-list::-webkit-scrollbar { width:3px; }
+  .cart-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+  .cart-item { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:7px; background:var(--surface2); border-radius:9px; padding:7px 9px; border:1px solid var(--border); }
+  .ci-emoji { font-size:1.3rem; line-height:1; }
+  .ci-info { min-width:0; }
+  .ci-name { font-weight:600; font-size:.76rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ci-price { font-size:.72rem; color:var(--ink2); }
+  .ci-controls { display:flex; align-items:center; gap:3px; }
+  .ci-btn { width:20px; height:20px; border-radius:5px; border:1px solid var(--border); background:var(--surface); cursor:pointer; font-size:.85rem; font-weight:700; display:flex; align-items:center; justify-content:center; color:var(--ink); transition:all .15s; flex-shrink:0; }
+  .ci-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .ci-btn.rm { color:var(--warn); }
+  .ci-btn.rm:hover { background:var(--warn); color:#fff; border-color:var(--warn); }
+  .ci-qty { font-family:'Syne',sans-serif; font-weight:700; font-size:.82rem; min-width:16px; text-align:center; }
+
+  /* Divider */
+  hr.div { border:none; border-top:1px dashed var(--border); }
+
+  /* Compact form */
+  .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+  .fg { display:flex; flex-direction:column; gap:3px; }
   .fg label { font-size:.7rem; font-weight:700; color:var(--ink2); text-transform:uppercase; letter-spacing:.4px; }
-  .fg input, .fg textarea { padding:9px; border:1.5px solid var(--border); border-radius:8px; background:var(--bg); font-family:inherit; font-size:.85rem; outline:none; }
-  .form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .fg input,.fg textarea { padding:7px 9px; border:1.5px solid var(--border); border-radius:8px; background:var(--bg); color:var(--ink); font-family:inherit; font-size:.83rem; outline:none; transition:border-color .2s; resize:none; }
+  .fg input:focus,.fg textarea:focus { border-color:var(--accent); background:#fff; }
 
-  .btn-wa { width:100%; padding:12px; background:var(--wa); color:#fff; border:none; border-radius:10px; font-family:'Syne',sans-serif; font-size:.95rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; }
-  .btn-wa:hover { background:var(--wa-dark); }
+  /* Summary */
+  .order-summary { background:var(--surface2); border-radius:10px; padding:10px 12px; border:1px solid var(--border); }
+  .os-items { display:flex; flex-direction:column; gap:3px; margin-bottom:7px; }
+  .os-line { display:flex; justify-content:space-between; font-size:.75rem; color:var(--ink2); }
+  .os-total { display:flex; justify-content:space-between; align-items:center; padding-top:6px; border-top:1.5px dashed var(--border); }
+  .os-total span:first-child { font-size:.8rem; font-weight:600; color:var(--ink); }
+  .os-total-amt { font-family:'Syne',sans-serif; font-weight:800; font-size:1rem; color:var(--accent); }
 
-  /* FIXING MEDIA QUERIES (RESTORED & FIXED) */
-  @media (max-width: 1024px) {
-    .shop-wrapper { grid-template-columns: 1fr; }
-    .order-sidebar { display: none; }
-    .cart-fab { display: flex; }
-    .hero h1 { font-size: 2.2rem; }
-  }
+  /* WA btn */
+  .btn-wa { width:100%; padding:11px; background:var(--wa); color:#fff; border:none; border-radius:10px; font-family:'Syne',sans-serif; font-size:.92rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px; transition:all .25s; }
+  .btn-wa:hover { background:var(--wa-dark); transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,211,102,.25); }
+  .validation-msg { display:none; color:var(--warn); font-size:.75rem; text-align:center; }
 
-  @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .hamburger { display: block; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); gap:12px; }
-    .hero { padding: 40px 20px; }
-  }
+  /* FAB */
+  .cart-fab { display:none; position:fixed; bottom:20px; right:18px; z-index:200; width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.2rem; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.2); align-items:center; justify-content:center; }
+  .fab-badge { position:absolute; top:-3px; right:-3px; background:var(--wa); color:#fff; border-radius:100px; font-size:.62rem; font-weight:800; min-width:17px; height:17px; display:flex; align-items:center; justify-content:center; padding:0 3px; }
 
-  @media (max-width: 480px) {
-    .products-grid { grid-template-columns: 1fr; }
-  }
-
-  /* MOBILE DRAWER & FAB */
-  .cart-fab { display:none; position:fixed; bottom:20px; right:20px; z-index:200; width:56px; height:56px; border-radius:50%; background:var(--accent); color:#fff; border:none; font-size:1.3rem; cursor:pointer; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+  /* Drawer */
   .cart-drawer { display:none; position:fixed; inset:0; z-index:300; }
   .cart-drawer.open { display:block; }
-  .drawer-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.5); }
-  .drawer-panel { position:absolute; bottom:0; left:0; right:0; background:var(--surface); border-radius:22px 22px 0 0; padding:20px; max-height:85vh; overflow-y:auto; }
+  .drawer-overlay { position:absolute; inset:0; background:rgba(0,0,0,.45); }
+  .drawer-panel { position:absolute; bottom:0; left:0; right:0; background:var(--surface); border-radius:22px 22px 0 0; padding:18px 16px 30px; max-height:90vh; overflow-y:auto; }
+  .drawer-handle { width:34px; height:4px; background:var(--border); border-radius:10px; margin:0 auto 14px; }
 
-  /* ABOUT & CONTACT SECTION (RESTORED) */
-  #about { background:var(--ink); color:#fff; padding:60px 20px; }
-  .about-inner { max-width:1000px; margin:0 auto; }
-  .about-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin-top:20px; }
-  .about-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:20px; }
-  
-  #contact { padding:60px 20px; background:var(--bg); }
-  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:30px; max-width:1000px; margin:0 auto; }
-  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
-  .contact-form { background:#fff; padding:20px; border-radius:16px; border:1px solid var(--border); }
-  
-  footer { background:#111; color:#777; text-align:center; padding:20px; font-size:.8rem; }
+  /* ABOUT */
+  #about { background:var(--ink); color:#fff; padding:68px 28px; position:relative; overflow:hidden; }
+  #about::before { content:''; position:absolute; bottom:-80px; left:-60px; width:300px; height:300px; background:radial-gradient(circle,rgba(82,183,136,.14) 0%,transparent 70%); }
+  .about-inner,.contact-inner { max-width:940px; margin:0 auto; }
+  .section-label { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent-light); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+  .section-label::before { content:''; display:block; width:18px; height:2px; background:currentColor; }
+  .about-inner h2 { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,4vw,2.3rem); font-weight:800; letter-spacing:-1px; margin-bottom:14px; line-height:1.2; }
+  .about-inner h2 em { font-style:normal; color:var(--accent-light); }
+  .about-inner > p { color:#bbb; max-width:600px; margin-bottom:32px; line-height:1.7; font-size:.91rem; }
+  .about-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:12px; }
+  .about-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:13px; padding:18px; transition:background .2s; }
+  .about-card:hover { background:rgba(255,255,255,.08); }
+  .about-card .icon { width:38px; height:38px; border-radius:9px; background:var(--accent-pale); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:.95rem; margin-bottom:10px; }
+  .about-card h3 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:4px; font-size:.9rem; }
+  .about-card p { color:#999; font-size:.81rem; margin:0; }
+
+  /* CONTACT */
+  #contact { padding:68px 28px; background:var(--bg); }
+  .contact-inner .section-label { color:var(--accent); }
+  .contact-inner h2 { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,4vw,2.1rem); font-weight:800; letter-spacing:-1px; margin-bottom:32px; }
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
+  .cinfo-items { display:flex; flex-direction:column; gap:11px; margin-bottom:18px; }
+  .cinfo-item { display:flex; align-items:flex-start; gap:11px; padding:13px; background:var(--surface); border:1.5px solid var(--border); border-radius:11px; }
+  .cicon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:.9rem; flex-shrink:0; }
+  .cicon.ph { background:#dbeafe; color:#2563eb; }
+  .cicon.wa { background:#dcfce7; color:#16a34a; }
+  .cicon.em { background:#fef3c7; color:#d97706; }
+  .cinfo-item strong { display:block; font-size:.7rem; color:var(--ink2); font-weight:700; text-transform:uppercase; letter-spacing:.4px; margin-bottom:1px; }
+  .cinfo-item span { font-weight:500; color:var(--ink); font-size:.88rem; }
+  .cinfo-item a { text-decoration:none; color:var(--accent); font-weight:600; font-size:.78rem; display:block; margin-top:2px; }
+  .contact-form { background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:20px 18px; }
+  .contact-form h3 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:14px; font-size:.96rem; }
+  .btn-submit { width:100%; padding:10px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:.88rem; cursor:pointer; transition:all .2s; margin-top:4px; }
+  .btn-submit:hover { background:#1b4332; }
+  .form-success { display:none; text-align:center; padding:14px; color:var(--accent); font-weight:600; font-size:.9rem; }
+  .form-success i { font-size:1.6rem; display:block; margin-bottom:5px; }
+
+  footer { background:#111; color:#888; text-align:center; padding:18px 28px; font-size:.8rem; }
+  footer strong { color:var(--accent-light); }
+
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(70px); background:var(--ink); color:#fff; padding:9px 20px; border-radius:100px; font-size:.83rem; font-weight:500; z-index:999; opacity:0; transition:all .35s; white-space:nowrap; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .fade-in { opacity:0; transform:translateY(18px); transition:opacity .5s ease,transform .5s ease; }
+  .fade-in.visible { opacity:1; transform:none; }
+
+  @media (max-width:900px) {
+    .shop-wrapper { grid-template-columns:1fr; }
+    .order-sidebar { display:none; }
+    .cart-fab { display:flex; }
+    nav { padding:0 14px; }
+    .nav-links { display:none; }
+    .hamburger { display:block; }
+    .contact-grid { grid-template-columns:1fr; }
+    .products-grid { grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); }
+  }
+  @media (max-width:480px) {
+    .hero { padding:38px 14px 30px; }
+    .hero-stats { gap:18px; }
+    .shop-wrapper { padding:18px 12px; }
+    #about,#contact { padding:48px 16px; }
+    .products-grid { grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); }
+  }
 </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav>
-  <div class="nav-logo"><i class="fas fa-leaf"></i>Pizza<span>King GB</span></div>
+  <div class="nav-logo"><i class="fas fa-leaf"></i>Quick<span>Mart</span></div>
   <div class="nav-links">
     <a href="#home">Home</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
-    <a href="https://wa.me/923555049894" class="nav-wa">WhatsApp</a>
+    <a href="https://wa.me/92119264467" target="_blank" class="nav-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
   </div>
   <div class="nav-right">
     <button class="nav-cart-btn" onclick="openDrawer()">
@@ -145,163 +236,420 @@
     <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
   </div>
 </nav>
-
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#home" onclick="toggleMenu()">Home</a>
-  <a href="#about" onclick="toggleMenu()">About</a>
-  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#home" onclick="toggleMenu()">🏠 Home</a>
+  <a href="#about" onclick="toggleMenu()">ℹ️ About</a>
+  <a href="#contact" onclick="toggleMenu()">📞 Contact</a>
+  <a href="https://wa.me/92119264467" target="_blank">💬 WhatsApp Us</a>
 </div>
 
+<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-badge">Multi-Item Cart · Order via WhatsApp</div>
+  <div class="hero-badge"><i class="fas fa-cart-plus"></i> Multi-Item Cart · Order via WhatsApp</div>
   <h1>Add Items, Order via <em>WhatsApp</em></h1>
-  <p>Freshly baked pizza and local favorites delivered to your door in Gilgit Baltistan.</p>
+  <p>Pick multiple products, set quantities, fill your details and send one combined order straight to WhatsApp.</p>
+  <div class="hero-stats">
+    <div class="stat"><strong>50+</strong><span>Products</span></div>
+    <div class="stat"><strong>🛒</strong><span>Multi-Item Cart</span></div>
+    <div class="stat"><strong>⚡</strong><span>Instant Orders</span></div>
+  </div>
 </section>
 
+<!-- SHOP -->
 <div class="shop-wrapper">
+  <!-- Products -->
   <div>
     <div class="products-header">
-      <h2>Browse Menu</h2>
-    </div>
-    
-    <div class="products-grid">
-      <div class="product-card">
-        <div class="product-img">🍕</div>
-        <div class="product-info">
-          <div class="product-name">Chicken Tikka Pizza</div>
-          <div class="product-price">PKR 1200</div>
-          <button class="btn-add" onclick="addToCart(1, 'Chicken Tikka Pizza', 1200, '🍕')">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-img">🍔</div>
-        <div class="product-info">
-          <div class="product-name">Beef Burger Special</div>
-          <div class="product-price">PKR 550</div>
-          <button class="btn-add" onclick="addToCart(2, 'Beef Burger Special', 550, '🍔')">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-img">🍗</div>
-        <div class="product-info">
-          <div class="product-name">Crunchy Zing</div>
-          <div class="product-price">PKR 450</div>
-          <button class="btn-add" onclick="addToCart(3, 'Crunchy Zing', 450, '🍗')">Add to Cart</button>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-img">🍟</div>
-        <div class="product-info">
-          <div class="product-name">Loaded Fries</div>
-          <div class="product-price">PKR 350</div>
-          <button class="btn-add" onclick="addToCart(4, 'Loaded Fries', 350, '🍟')">Add to Cart</button>
-        </div>
+      <h2>Browse Products</h2>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search…" oninput="filterProducts()">
       </div>
     </div>
+    <div class="filter-tabs" id="filterTabs"></div>
+    <div class="products-grid" id="productsGrid"></div>
   </div>
 
+  <!-- Sidebar -->
   <aside class="order-sidebar">
-    <h3>Your Cart</h3>
-    <div id="cartListDesktop" class="cart-list"></div>
-    <div class="form-row2">
-      <div class="fg"><label>First Name</label><input type="text" id="fname" placeholder="Ali"></div>
-      <div class="fg"><label>Last Name</label><input type="text" id="lname" placeholder="Hassan"></div>
+    <div class="sidebar-title">
+      <i class="fas fa-shopping-cart"></i> Your Cart
+      <span class="sidebar-count" id="sidebarCount"></span>
     </div>
-    <div class="fg"><label>Contact Number</label><input type="text" id="phone" placeholder="03xx-xxxxxxx"></div>
-    <div class="fg"><label>Address</label><textarea id="address" rows="2" placeholder="House #, Street..."></textarea></div>
-    <div style="font-weight:800; padding:10px 0;">Total: <span id="totalD" style="color:var(--accent)">PKR 0</span></div>
-    <button class="btn-wa" onclick="placeOrder('fname', 'lname', 'phone', 'address')"><i class="fab fa-whatsapp"></i> Order via WhatsApp</button>
+
+    <!-- Cart items list -->
+    <div id="cartListDesktop" class="cart-list"></div>
+
+    <hr class="div"/>
+
+    <!-- Compact customer form -->
+    <div class="form-row2">
+      <div class="fg"><label>First Name</label><input type="text" id="firstName" placeholder="Ali"/></div>
+      <div class="fg"><label>Last Name</label><input type="text" id="lastName" placeholder="Hassan"/></div>
+    </div>
+    <div class="fg" style="margin-top:7px;"><label>Address</label><textarea id="address" rows="2" placeholder="House #, Street, City…"></textarea></div>
+
+    <hr class="div"/>
+
+    <!-- Summary -->
+    <div class="order-summary">
+      <div class="os-items" id="osSummaryLines"><div style="font-size:.75rem;color:var(--ink2);">No items yet</div></div>
+      <div class="os-total">
+        <span>Grand Total</span>
+        <span class="os-total-amt" id="osGrandTotal">PKR 0</span>
+      </div>
+    </div>
+
+    <button class="btn-wa" onclick="placeOrder('firstName','lastName','address','validationMsg')">
+      <i class="fab fa-whatsapp"></i> Place Order via WhatsApp
+    </button>
+    <div class="validation-msg" id="validationMsg">Please add items and fill in all fields.</div>
   </aside>
 </div>
 
-<section id="about">
-  <div class="about-inner">
-    <h2>Your Trusted <em>Online Store</em> in GB</h2>
-    <div class="about-cards">
-      <div class="about-card"><h3>Trusted Quality</h3><p>Every order quality-checked.</p></div>
-      <div class="about-card"><h3>Fast Delivery</h3><p>Direct to your doorstep.</p></div>
-    </div>
-  </div>
-</section>
+<!-- FAB (mobile) -->
+<button class="cart-fab" id="cartFab" onclick="openDrawer()">
+  <i class="fas fa-shopping-cart"></i>
+  <span class="fab-badge" id="fabBadge">0</span>
+</button>
 
-<section id="contact">
-  <div class="contact-grid">
-    <div>
-        <h2>Get In Touch</h2>
-        <p>WhatsApp: +92 355 5049894</p>
-    </div>
-    <div class="contact-form">
-        <div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div>
-        <div class="fg"><label>Message</label><textarea rows="3" placeholder="How can we help?"></textarea></div>
-        <button class="btn-wa">Send Message</button>
-    </div>
-  </div>
-</section>
-
-<button class="cart-fab" onclick="openDrawer()"><i class="fas fa-shopping-cart"></i></button>
-
+<!-- Drawer (mobile) -->
 <div class="cart-drawer" id="cartDrawer">
   <div class="drawer-overlay" onclick="closeDrawer()"></div>
   <div class="drawer-panel">
-    <h3>Mobile Cart</h3>
-    <div id="cartListMobile" class="cart-list"></div>
-    <div class="form-row2">
-      <div class="fg"><label>First Name</label><input type="text" id="fnameM" placeholder="Ali"></div>
-      <div class="fg"><label>Last Name</label><input type="text" id="lnameM" placeholder="Hassan"></div>
+    <div class="drawer-handle"></div>
+    <div class="sidebar-title" style="margin-bottom:12px;">
+      <i class="fas fa-shopping-cart"></i> Your Cart
+      <span class="sidebar-count" id="sidebarCountM"></span>
     </div>
-    <div class="fg"><label>Contact Number</label><input type="text" id="phoneM" placeholder="03xx-xxxxxxx"></div>
-    <div class="fg"><label>Address</label><textarea id="addressM" rows="2"></textarea></div>
-    <button class="btn-wa" onclick="placeOrder('fnameM', 'lnameM', 'phoneM', 'addressM')">Order Now</button>
+    <div id="cartListMobile" class="cart-list" style="max-height:32vh;"></div>
+    <hr class="div" style="margin:11px 0;"/>
+    <div class="form-row2">
+      <div class="fg"><label>First Name</label><input type="text" id="firstNameM" placeholder="Ali"/></div>
+      <div class="fg"><label>Last Name</label><input type="text" id="lastNameM" placeholder="Hassan"/></div>
+    </div>
+    <div class="fg" style="margin-top:7px;"><label>Address</label><textarea id="addressM" rows="2" placeholder="House #, Street, City…"></textarea></div>
+    <hr class="div" style="margin:11px 0;"/>
+    <div class="order-summary">
+      <div class="os-items" id="osSummaryMobile"><div style="font-size:.75rem;color:var(--ink2);">No items yet</div></div>
+      <div class="os-total">
+        <span>Grand Total</span>
+        <span class="os-total-amt" id="osGrandTotalM">PKR 0</span>
+      </div>
+    </div>
+    <button class="btn-wa" style="margin-top:11px;" onclick="placeOrder('firstNameM','lastNameM','addressM','validationMsgM')">
+      <i class="fab fa-whatsapp"></i> Place Order via WhatsApp
+    </button>
+    <div class="validation-msg" id="validationMsgM" style="margin-top:5px;">Please add items and fill in all fields.</div>
   </div>
 </div>
 
-<footer><p>© 2026 <strong>Pizza King GB</strong> · All Rights Reserved</p></footer>
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner fade-in">
+    <div class="section-label">Who We Are</div>
+    <h2>Your Trusted <em>Online Store</em> in Pakistan</h2>
+    <p>QuickMart lets you add multiple items to your cart and place one combined WhatsApp order — no signup, no app, no hassle. Trusted by hundreds of customers nationwide.</p>
+    <div class="about-cards">
+      <div class="about-card"><div class="icon"><i class="fas fa-shield-alt"></i></div><h3>Trusted & Verified</h3><p>Every product quality-checked before dispatch.</p></div>
+      <div class="about-card"><div class="icon"><i class="fas fa-cart-plus"></i></div><h3>Multi-Item Orders</h3><p>Add as many items as you want — one order, one message.</p></div>
+      <div class="about-card"><div class="icon"><i class="fas fa-truck"></i></div><h3>Nationwide Delivery</h3><p>Delivering across all major cities in Pakistan.</p></div>
+      <div class="about-card"><div class="icon"><i class="fas fa-headset"></i></div><h3>24/7 Support</h3><p>Always available on WhatsApp to help you.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner fade-in">
+    <div class="section-label">Get In Touch</div>
+    <h2>Contact Us</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="cinfo-items">
+          <div class="cinfo-item"><div class="cicon ph"><i class="fas fa-phone"></i></div><div><strong>Phone</strong><span>+92 119 264 467</span><a href="tel:+92119264467">Call Now →</a></div></div>
+          <div class="cinfo-item"><div class="cicon wa"><i class="fab fa-whatsapp"></i></div><div><strong>WhatsApp</strong><span>+92 119 264 467</span><a href="https://wa.me/92119264467" target="_blank">Chat Now →</a></div></div>
+          <div class="cinfo-item"><div class="cicon em"><i class="fas fa-envelope"></i></div><div><strong>Email</strong><span>orders@quickmart.pk</span><a href="mailto:orders@quickmart.pk">Send Email →</a></div></div>
+        </div>
+        <p style="color:var(--ink2);font-size:.82rem;"><i class="fas fa-clock" style="color:var(--accent);margin-right:5px;"></i>Mon–Sat, 9am – 9pm PKT</p>
+      </div>
+      <div class="contact-form">
+        <h3>Send a Message</h3>
+        <div id="contactFormFields">
+          <div class="form-row2" style="margin-bottom:7px;">
+            <div class="fg"><label>Name</label><input type="text" id="cName" placeholder="Your name"/></div>
+            <div class="fg"><label>Phone</label><input type="text" id="cPhone" placeholder="+92 ..."/></div>
+          </div>
+          <div class="fg" style="margin-bottom:7px;"><label>Subject</label><input type="text" id="cSubject" placeholder="Topic…"/></div>
+          <div class="fg" style="margin-bottom:9px;"><label>Message</label><textarea id="cMessage" rows="3" placeholder="Your message…"></textarea></div>
+          <button class="btn-submit" onclick="sendContactMessage()"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+        </div>
+        <div class="form-success" id="formSuccess"><i class="fas fa-check-circle"></i>Redirecting to WhatsApp…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><p>© 2025 <strong>QuickMart</strong> · Made with ❤️ in Pakistan · WhatsApp: <strong>+92 119 264 467</strong></p></footer>
+<div class="toast" id="toast"></div>
 
 <script>
-let cart = [];
+const products = [
+  {id:1,  name:"Wireless Earbuds Pro",       price:2499, cat:"Electronics", emoji:"🎧"},
+  {id:2,  name:"USB-C Fast Charger 65W",     price:1199, cat:"Electronics", emoji:"🔌"},
+  {id:3,  name:"Bluetooth Speaker Mini",     price:3299, cat:"Electronics", emoji:"🔊"},
+  {id:4,  name:"Phone Stand Adjustable",     price:599,  cat:"Electronics", emoji:"📱"},
+  {id:5,  name:"LED Desk Lamp USB",          price:1499, cat:"Electronics", emoji:"💡"},
+  {id:6,  name:"Smartwatch Band 45mm",       price:4999, cat:"Electronics", emoji:"⌚"},
+  {id:7,  name:"Portable Power Bank 10k",    price:2999, cat:"Electronics", emoji:"🔋"},
+  {id:8,  name:"Webcam HD 1080p",            price:3499, cat:"Electronics", emoji:"📷"},
+  {id:9,  name:"Stainless Steel Thermos",    price:899,  cat:"Kitchen",     emoji:"☕"},
+  {id:10, name:"Non-Stick Frying Pan",       price:1299, cat:"Kitchen",     emoji:"🍳"},
+  {id:11, name:"Electric Kettle 1.5L",       price:2199, cat:"Kitchen",     emoji:"🫖"},
+  {id:12, name:"Blender Jar Set",            price:1699, cat:"Kitchen",     emoji:"🥤"},
+  {id:13, name:"Lunch Box Set (3-tier)",     price:799,  cat:"Kitchen",     emoji:"🍱"},
+  {id:14, name:"Wooden Spoon Set 5pcs",      price:399,  cat:"Kitchen",     emoji:"🥄"},
+  {id:15, name:"Air-Tight Container Set",    price:649,  cat:"Kitchen",     emoji:"🫙"},
+  {id:16, name:"Silicone Baking Mat",        price:549,  cat:"Kitchen",     emoji:"🧁"},
+  {id:17, name:"Cotton Shalwar Kameez",      price:1799, cat:"Fashion",     emoji:"👕"},
+  {id:18, name:"Leather Wallet Slim",        price:1199, cat:"Fashion",     emoji:"👛"},
+  {id:19, name:"Classic Wrist Watch",        price:5999, cat:"Fashion",     emoji:"🕐"},
+  {id:20, name:"Sunglasses UV400",           price:999,  cat:"Fashion",     emoji:"🕶️"},
+  {id:21, name:"Canvas Tote Bag",            price:699,  cat:"Fashion",     emoji:"👜"},
+  {id:22, name:"Sneakers White (40-44)",     price:4499, cat:"Fashion",     emoji:"👟"},
+  {id:23, name:"Embroidered Cap",            price:799,  cat:"Fashion",     emoji:"🧢"},
+  {id:24, name:"Silk Scarf Women",           price:1099, cat:"Fashion",     emoji:"🧣"},
+  {id:25, name:"Yoga Mat Premium",           price:1999, cat:"Health",      emoji:"🧘"},
+  {id:26, name:"Resistance Bands Set",       price:899,  cat:"Health",      emoji:"💪"},
+  {id:27, name:"Jump Rope Steel",            price:499,  cat:"Health",      emoji:"🤸"},
+  {id:28, name:"Foam Roller Massage",        price:1299, cat:"Health",      emoji:"🛁"},
+  {id:29, name:"Pulse Oximeter",             price:1499, cat:"Health",      emoji:"❤️"},
+  {id:30, name:"Digital Thermometer",        price:699,  cat:"Health",      emoji:"🌡️"},
+  {id:31, name:"Hand Sanitizer 500ml",       price:349,  cat:"Health",      emoji:"🧴"},
+  {id:32, name:"N95 Face Masks 20pcs",       price:599,  cat:"Health",      emoji:"😷"},
+  {id:33, name:"A5 Hardcover Notebook",      price:499,  cat:"Stationery",  emoji:"📓"},
+  {id:34, name:"Gel Pens Set 12 Colors",     price:399,  cat:"Stationery",  emoji:"✒️"},
+  {id:35, name:"Sticky Notes Bundle",        price:249,  cat:"Stationery",  emoji:"📌"},
+  {id:36, name:"Desk Organizer Bamboo",      price:1199, cat:"Stationery",  emoji:"📂"},
+  {id:37, name:"Highlighter Set 6pcs",       price:349,  cat:"Stationery",  emoji:"🖍️"},
+  {id:38, name:"Magnetic Whiteboard A3",     price:1799, cat:"Stationery",  emoji:"🗒️"},
+  {id:39, name:"Scissors + Cutter Set",      price:449,  cat:"Stationery",  emoji:"✂️"},
+  {id:40, name:"Pencil Box Premium",         price:599,  cat:"Stationery",  emoji:"📦"},
+  {id:41, name:"Fragrance Candle Set",       price:999,  cat:"Home",        emoji:"🕯️"},
+  {id:42, name:"Wall Clock Modern",          price:2499, cat:"Home",        emoji:"🕑"},
+  {id:43, name:"Curtain Sheer 2-Panel",      price:1599, cat:"Home",        emoji:"🪟"},
+  {id:44, name:"Throw Pillow Cover 2pcs",    price:799,  cat:"Home",        emoji:"🛋️"},
+  {id:45, name:"Bathroom Soap Dispenser",    price:649,  cat:"Home",        emoji:"🧼"},
+  {id:46, name:"Doormat Anti-Slip",          price:849,  cat:"Home",        emoji:"🏡"},
+  {id:47, name:"Photo Frame Set 3pcs",       price:1099, cat:"Home",        emoji:"🖼️"},
+  {id:48, name:"Laundry Basket Foldable",    price:1299, cat:"Home",        emoji:"🧺"},
+  {id:49, name:"Air Freshener Spray 300ml",  price:449,  cat:"Home",        emoji:"💨"},
+  {id:50, name:"Bamboo Shelf 3-Tier",        price:3499, cat:"Home",        emoji:"🪴"},
+];
 
-function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-function openDrawer() { document.getElementById('cartDrawer').classList.add('open'); }
-function closeDrawer() { document.getElementById('cartDrawer').classList.remove('open'); }
+// ── CART STATE ──
+let cart = {}; // { id: qty }
+let activeCategory = 'All';
 
-function addToCart(id, name, price, emoji) {
-  const exist = cart.find(i => i.id === id);
-  if (exist) { exist.qty++; } else { cart.push({id, name, price, emoji, qty: 1}); }
-  updateCart();
+// ── HELPERS ──
+const cartItems = () => Object.entries(cart).filter(([,q])=>q>0).map(([id,qty])=>({product:products.find(p=>p.id===+id),qty}));
+const cartCount = () => Object.values(cart).reduce((a,b)=>a+b,0);
+const grandTotal = () => cartItems().reduce((s,{product,qty})=>s+product.price*qty,0);
+
+// ── ADD TO CART ──
+function addToCart(id) {
+  cart[id] = (cart[id]||0) + 1;
+  refreshAll();
+  const p = products.find(x=>x.id===id);
+  showToast(`🛒 ${p.emoji} Added to cart`);
 }
 
-function updateCart() {
-  const dList = document.getElementById('cartListDesktop');
-  const mList = document.getElementById('cartListMobile');
-  let html = '';
-  let total = 0;
-  let count = 0;
+function changeItemQty(id, delta) {
+  cart[id] = Math.max(0, (cart[id]||0) + delta);
+  if (cart[id]===0) delete cart[id];
+  refreshAll();
+}
 
-  cart.forEach(item => {
-    total += (item.price * item.qty);
-    count += item.qty;
-    html += `<div class="cart-item"><span>${item.emoji} ${item.name} x${item.qty}</span><span>${item.price * item.qty}</span></div>`;
+function removeItem(id) {
+  delete cart[id];
+  refreshAll();
+  showToast('🗑️ Item removed');
+}
+
+// ── REFRESH ALL UI ──
+function refreshAll() {
+  const count = cartCount();
+  document.getElementById('navCartCount').textContent = count;
+  document.getElementById('fabBadge').textContent = count;
+  const label = count>0?`(${count} item${count>1?'s':''})`:'';
+  document.getElementById('sidebarCount').textContent = label;
+  document.getElementById('sidebarCountM').textContent = label;
+
+  // Update product cards without full re-render
+  products.forEach(p => {
+    const card = document.getElementById('card-'+p.id);
+    if (!card) return;
+    const qty = cart[p.id]||0;
+    const badge = document.getElementById('badge-'+p.id);
+    if (badge) badge.textContent = qty;
+    card.classList.toggle('in-cart', qty>0);
+    const btn = card.querySelector('.btn-add');
+    if (btn) btn.textContent = qty>0?'+ Add More':'Add to Cart';
   });
 
-  dList.innerHTML = mList.innerHTML = html || '<p>Empty Cart</p>';
-  document.getElementById('navCartCount').innerText = count;
-  document.getElementById('totalD').innerText = 'PKR ' + total;
+  renderCartList('cartListDesktop');
+  renderCartList('cartListMobile');
+  renderSummary('osSummaryLines','osGrandTotal');
+  renderSummary('osSummaryMobile','osGrandTotalM');
 }
 
-function placeOrder(fID, lID, pID, aID) {
-  const fn = document.getElementById(fID).value;
-  const ln = document.getElementById(lID).value;
-  const ph = document.getElementById(pID).value;
-  const ad = document.getElementById(aID).value;
-
-  if (!cart.length || !fn || !ph || !ad) { alert("Add items and fill all details!"); return; }
-
-  let itemsText = cart.map(i => `- ${i.name} (x${i.qty})`).join('%0A');
-  let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-  
-  const msg = `*New Order - Pizza King GB*%0A%0A*Name:* ${fn} ${ln}%0A*Phone:* ${ph}%0A*Address:* ${ad}%0A%0A*Items:*%0A${itemsText}%0A%0A*Total:* PKR ${total}`;
-  window.open(`https://wa.me/923555049894?text=${msg}`, '_blank');
+function renderCartList(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const items = cartItems();
+  if (!items.length) {
+    el.innerHTML = '<div class="cart-empty">🛒 Cart is empty.<br><small>Tap "Add to Cart" on any product.</small></div>';
+    return;
+  }
+  el.innerHTML = items.map(({product:p,qty}) => `
+    <div class="cart-item">
+      <div class="ci-emoji">${p.emoji}</div>
+      <div class="ci-info">
+        <div class="ci-name" title="${p.name}">${p.name}</div>
+        <div class="ci-price">PKR ${(p.price*qty).toLocaleString()} ×${qty}</div>
+      </div>
+      <div class="ci-controls">
+        <button class="ci-btn" onclick="changeItemQty(${p.id},-1)">−</button>
+        <span class="ci-qty">${qty}</span>
+        <button class="ci-btn" onclick="changeItemQty(${p.id},1)">+</button>
+        <button class="ci-btn rm" onclick="removeItem(${p.id})" title="Remove"><i class="fas fa-times" style="font-size:.6rem;"></i></button>
+      </div>
+    </div>`).join('');
 }
+
+function renderSummary(linesId, totalId) {
+  const lines = document.getElementById(linesId);
+  const totalEl = document.getElementById(totalId);
+  if (!lines||!totalEl) return;
+  const items = cartItems();
+  if (!items.length) {
+    lines.innerHTML = '<div style="font-size:.74rem;color:var(--ink2);">No items yet</div>';
+    totalEl.textContent = 'PKR 0';
+    return;
+  }
+  lines.innerHTML = items.map(({product:p,qty}) =>
+    `<div class="os-line"><span>${p.emoji} ${p.name} ×${qty}</span><span>PKR ${(p.price*qty).toLocaleString()}</span></div>`
+  ).join('');
+  totalEl.textContent = 'PKR ' + grandTotal().toLocaleString();
+}
+
+// ── PLACE ORDER ──
+function placeOrder(fnId, lnId, addrId, msgId) {
+  const first = document.getElementById(fnId).value.trim();
+  const last  = document.getElementById(lnId).value.trim();
+  const addr  = document.getElementById(addrId).value.trim();
+  const msgEl = document.getElementById(msgId);
+  if (!cartItems().length||!first||!last||!addr) {
+    msgEl.style.display='block';
+    setTimeout(()=>msgEl.style.display='none',3500);
+    return;
+  }
+  const itemLines = cartItems().map(({product:p,qty})=>`  • ${p.emoji} ${p.name} × ${qty} = PKR ${(p.price*qty).toLocaleString()}`).join('\n');
+  const text = `🛍️ *New Order – QuickMart*\n\n`+
+    `👤 *Customer:* ${first} ${last}\n`+
+    `📍 *Address:* ${addr}\n\n`+
+    `📦 *Items Ordered:*\n${itemLines}\n\n`+
+    `💵 *Grand Total:* PKR ${grandTotal().toLocaleString()}\n\n`+
+    `✅ Please confirm my order. Thank you!`;
+  window.open(`https://wa.me/92119264467?text=${encodeURIComponent(text)}`,'_blank');
+  showToast('🚀 Opening WhatsApp…');
+}
+
+// ── PRODUCTS RENDERING ──
+function renderProducts(list) {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = '';
+  if (!list.length) {
+    grid.innerHTML = '<div class="no-results"><i class="fas fa-search"></i><p>No products found.</p></div>';
+    return;
+  }
+  list.forEach(p => {
+    const qty = cart[p.id]||0;
+    const card = document.createElement('div');
+    card.className = 'product-card'+(qty>0?' in-cart':'');
+    card.id = 'card-'+p.id;
+    card.innerHTML = `
+      <div class="cart-qty-badge" id="badge-${p.id}">${qty}</div>
+      <div class="product-img">${p.emoji}</div>
+      <div class="product-info">
+        <div class="product-category">${p.cat}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-footer">
+          <div class="product-price">PKR ${p.price.toLocaleString()}</div>
+          <button class="btn-add" onclick="event.stopPropagation();addToCart(${p.id})">${qty>0?'+ Add More':'Add to Cart'}</button>
+        </div>
+      </div>`;
+    card.onclick = () => addToCart(p.id);
+    grid.appendChild(card);
+  });
+}
+
+function filterProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let list = products;
+  if (activeCategory!=='All') list=list.filter(p=>p.cat===activeCategory);
+  if (q) list=list.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+  renderProducts(list);
+}
+
+function buildFilterTabs() {
+  const cats=['All',...new Set(products.map(p=>p.cat))];
+  const container=document.getElementById('filterTabs');
+  cats.forEach(cat=>{
+    const btn=document.createElement('button');
+    btn.className='filter-tab'+(cat==='All'?' active':'');
+    btn.textContent=cat;
+    btn.onclick=()=>{
+      activeCategory=cat;
+      document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterProducts();
+    };
+    container.appendChild(btn);
+  });
+}
+
+// ── DRAWER ──
+function openDrawer() { document.getElementById('cartDrawer').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeDrawer() { document.getElementById('cartDrawer').classList.remove('open'); document.body.style.overflow=''; }
+
+// ── CONTACT ──
+function sendContactMessage() {
+  const name=document.getElementById('cName').value.trim();
+  const phone=document.getElementById('cPhone').value.trim();
+  const subject=document.getElementById('cSubject').value.trim();
+  const message=document.getElementById('cMessage').value.trim();
+  if(!name||!message){showToast('⚠️ Please fill name & message.');return;}
+  const text=`💬 *Contact – QuickMart*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone||'N/A'}\n📌 *Subject:* ${subject||'General'}\n\n📝 ${message}`;
+  document.getElementById('contactFormFields').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+  setTimeout(()=>{
+    window.open(`https://wa.me/92119264467?text=${encodeURIComponent(text)}`,'_blank');
+    setTimeout(()=>{document.getElementById('contactFormFields').style.display='block';document.getElementById('formSuccess').style.display='none';},2000);
+  },500);
+}
+
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function initScrollAnimation(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+}
+
+buildFilterTabs();
+filterProducts();
+refreshAll();
+initScrollAnimation();
 </script>
 </body>
 </html>
